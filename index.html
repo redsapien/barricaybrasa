@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BARRICA & BRASA | Ahumados Premium</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Outfit:wght@300;600;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #D4AF37; 
+            --accent: #FF4500; 
+            --dark: #0A0A0A;
+            --card-bg: #161616;
+            --font-title: 'Cinzel', serif;
+            --font-main: 'Outfit', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background: var(--dark); 
+            color: #fff; 
+            font-family: var(--font-main); 
+            overflow-x: hidden; 
+            line-height: 1.6;
+        }
+
+        /* --- HEADER PREMIUM --- */
+        header {
+            position: fixed; top: 0; width: 100%; height: 80px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5%; z-index: 1000; 
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.7);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .logo { font-family: var(--font-title); color: var(--primary); font-size: 1.4rem; letter-spacing: 3px; font-weight: 900; }
+
+        /* --- SIDEBAR SOCIAL --- */
+        .social-sidebar {
+            position: fixed; left: 15px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 12px; z-index: 1100;
+        }
+        .social-icon {
+            width: 42px; height: 42px; border-radius: 12px; display: flex;
+            align-items: center; justify-content: center; font-size: 1.1rem;
+            color: #fff; text-decoration: none; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .social-icon:hover { transform: scale(1.2) rotate(8deg); background: var(--primary); color: #000; }
+
+        .section {
+            display: none; min-height: 100vh; width: 100%;
+            padding: 100px 15px 120px; position: relative;
+            flex-direction: column; align-items: center;
+        }
+        .section.active { display: flex; animation: fadeIn 0.8s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        /* --- HERO --- */
+        #video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        #bg-video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.3) contrast(1.2); }
+        
+        .hero-box { text-align: center; max-width: 750px; margin-top: 12vh; z-index: 10; }
+        .hero-box span { color: var(--primary); font-weight: 900; letter-spacing: 5px; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 15px; display: block; }
+        .hero-box h1 { font-family: var(--font-title); font-size: clamp(2.5rem, 8vw, 4.5rem); line-height: 1; margin-bottom: 25px; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        .typewriter { font-family: 'JetBrains Mono'; color: #888; font-size: 1.1rem; min-height: 3.5em; max-width: 500px; margin: 0 auto 40px; }
+
+        .btn-ignite {
+            background: var(--primary);
+            color: #000; border: none; padding: 25px 60px;
+            font-family: var(--font-title); font-weight: 900; font-size: 1.2rem;
+            cursor: pointer; position: relative; transition: 0.4s;
+            border-radius: 2px; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+        }
+        .btn-ignite:hover { background: #fff; transform: translateY(-5px); box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4); }
+
+        /* --- MENU CARDS --- */
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; max-width: 1200px; }
+
+        .card { 
+            background: var(--card-bg); border-radius: 20px; overflow: hidden; 
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.4s; position: relative; 
+        }
+        .card:hover { border-color: var(--primary); transform: translateY(-10px); }
+        .card img { width: 100%; height: 280px; object-fit: cover; transition: 0.5s; }
+        .card:hover img { transform: scale(1.05); filter: brightness(1.1); }
+        
+        .price-tag { 
+            position: absolute; top: 20px; right: 20px; 
+            background: #fff; color: #000; font-weight: 900; 
+            padding: 8px 18px; border-radius: 5px; font-size: 1.1rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .card-content { padding: 30px; }
+        .card-content h3 { font-family: var(--font-title); color: var(--primary); margin-bottom: 10px; font-size: 1.4rem; }
+        .card-content p { font-size: 0.95rem; color: #777; margin-bottom: 30px; }
+
+        .qty-box { 
+            display: flex; align-items: center; justify-content: space-between; 
+            background: #000; padding: 15px 20px; border-radius: 12px; 
+            border: 1px solid #222; 
+        }
+        .qty-btn { 
+            background: var(--primary); border: none; width: 40px; height: 40px; 
+            border-radius: 8px; font-weight: 900; cursor: pointer; color: #000; font-size: 1.2rem;
+        }
+        .qty-val { font-family: 'JetBrains Mono'; font-weight: 700; color: #fff; font-size: 1.4rem; }
+
+        /* --- CHECKOUT BAR --- */
+        .checkout-bar {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 500px; background: var(--primary); color: #000;
+            padding: 22px 40px; border-radius: 15px; display: none;
+            justify-content: space-between; align-items: center; z-index: 1000;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); font-weight: 900; cursor: pointer;
+            animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        @keyframes bounceIn { from { transform: translate(-50%, 100px); } }
+
+        /* --- MODAL FORM --- */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; z-index: 2000; align-items: center; justify-content: center; padding: 15px; backdrop-filter: blur(10px); }
+        .form-wrap { background: #111; border: 1px solid var(--primary); padding: 40px; width: 100%; max-width: 480px; border-radius: 5px; position: relative; }
+        
+        input, select, textarea { 
+            width: 100%; background: #1a1a1a; border: 1px solid #333; color: #fff; 
+            padding: 18px; margin-bottom: 15px; border-radius: 4px; font-family: inherit; 
+        }
+        input:focus { border-color: var(--primary); outline: none; }
+        
+        .btn-send { 
+            width: 100%; background: var(--primary); border: none; padding: 22px; 
+            font-weight: 900; text-transform: uppercase; cursor: pointer; 
+            font-family: var(--font-title); font-size: 1.1rem;
+        }
+
+        /* --- TRANSITION EFFECT --- */
+        #ignite-effect {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 5000; display: none;
+            justify-content: center; align-items: center; flex-direction: column;
+        }
+
+        @media (max-width: 480px) {
+            header { height: 70px; }
+            .hero-box h1 { font-size: 2.8rem; }
+            .social-sidebar { display: none; } /* Limpieza en móvil */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">BARRICA & BRASA</div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 0.7rem; font-weight: 900; color: var(--primary);">ABIERTO</span>
+            <i class="fas fa-circle" style="color: #00ff00; font-size: 0.6rem; animation: pulse 1.5s infinite;"></i>
+        </div>
+    </header>
+
+    <div class="social-sidebar">
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-tiktok"></i></a>
+    </div>
+
+    <div id="ignite-effect">
+        <h2 style="font-family: var(--font-title); color: var(--primary); letter-spacing: 5px;">PREPARANDO LA BRASA...</h2>
+    </div>
+
+    <section id="s1" class="section active">
+        <div id="video-container">
+            <video id="bg-video" autoplay muted loop playsinline>
+                <source src="Video/Fondo-Mr.Sapien.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="hero-box">
+            <span>Tradición al Barril</span>
+            <h1>EL ARTE DE COCINAR CON FUEGO</h1>
+            <div id="typewriter" class="typewriter"></div>
+            <button class="btn-ignite" onclick="runIgnition()">VER LA CARTA 🔥</button>
+        </div>
+    </section>
+
+    <section id="s2" class="section">
+        <h2 style="font-family: var(--font-title); font-size: 2.5rem; color: var(--primary); margin-bottom: 5px;">AHUMADOS PREMIUM</h2>
+        <p style="color: #666; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 2px;">Selecciona tu arsenal de sabor</p>
+        
+        <div class="menu-grid">
+            <div class="card">
+                <div class="price-tag">$48.000</div>
+                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600" alt="Costilla">
+                <div class="card-content">
+                    <h3>COSTILLA BARRICA</h3>
+                    <p>450g de costilla seleccionada, ahumada lentamente con leña de manzano. Se deshace al tacto.</p>
+                    <div class="qty-box">
+                        <span style="color: #555; font-size: 0.75rem; font-weight: 900;">CANTIDAD</span>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <button class="qty-btn" onclick="updateCart('Costilla Barrica', 48000, -1)">-</button>
+                            <span class="qty-val" id="qty-Costilla Barrica">0</span>
+                            <button class="qty-btn" onclick="updateCart('Costilla Barrica', 48000, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="price-tag">$35.000</div>
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=600" alt="Burger">
+                <div class="card-content">
+                    <h3>BURGER AHUMADA</h3>
+                    <p>200g de Brisket y Short Rib, queso siete cueros y cebollas caramelizadas al barril.</p>
+                    <div class="qty-box">
+                        <span style="color: #555; font-size: 0.75rem; font-weight: 900;">CANTIDAD</span>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <button class="qty-btn" onclick="updateCart('Burger Ahumada', 35000, -1)">-</button>
+                            <span class="qty-val" id="qty-Burger Ahumada">0</span>
+                            <button class="qty-btn" onclick="updateCart('Burger Ahumada', 35000, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="price-tag">$56.000</div>
+                <img src="https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?q=80&w=600" alt="Mix">
+                <div class="card-content">
+                    <h3>EL TRIDENTE</h3>
+                    <p>La combinación definitiva: Bondiola, Chicharrón carnudo y Chorizo de la casa.</p>
+                    <div class="qty-box">
+                        <span style="color: #555; font-size: 0.75rem; font-weight: 900;">CANTIDAD</span>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <button class="qty-btn" onclick="updateCart('El Tridente Mix', 56000, -1)">-</button>
+                            <span class="qty-val" id="qty-El Tridente Mix">0</span>
+                            <button class="qty-btn" onclick="updateCart('El Tridente Mix', 56000, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="checkout" class="checkout-bar" onclick="openForm()">
+            <span>PROCEDER AL PEDIDO 🛒</span>
+            <span id="total-val">$0</span>
+        </div>
+    </section>
+
+    <div id="modal-form" class="modal">
+        <div class="form-wrap">
+            <h2 style="font-family: var(--font-title); color: var(--primary); margin-bottom: 10px;">DATOS DE ENVÍO</h2>
+            <p style="color: #666; font-size: 0.85rem; margin-bottom: 30px;">Confirma tu ubicación en Manizales/Villamaría:</p>
+            <form onsubmit="sendOrder(event)">
+                <input type="text" id="fname" placeholder="Nombre completo" required>
+                <input type="text" id="faddr" placeholder="Dirección exacta + Barrio" required>
+                <input type="tel" id="ftel" placeholder="Celular de contacto" required>
+                <select id="fpay" required>
+                    <option value="" disabled selected>Método de pago</option>
+                    <option value="Transferencia">Nequi / Daviplata</option>
+                    <option value="Efectivo">Efectivo (Contraentrega)</option>
+                    <option value="Datáfono">Datáfono</option>
+                </select>
+                <textarea id="fnote" placeholder="Instrucciones adicionales..." rows="2"></textarea>
+                <button type="submit" class="btn-send">ENVIAR PEDIDO POR WHATSAPP 🚀</button>
+                <p style="text-align: center; color: #444; margin-top: 25px; font-size: 0.8rem; cursor: pointer;" onclick="document.getElementById('modal-form').style.display='none'">CANCELAR</p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let cart = {};
+        let total = 0;
+
+        // --- EFECTO TYPEWRITER ---
+        const phrase = "Cortes premium ahumados con leña seleccionada por 4 horas.\nEl sabor real del barril, ahora en tu mesa.";
+        let charIndex = 0;
+        function writeEffect() {
+            if(charIndex < phrase.length) {
+                document.getElementById('typewriter').innerHTML += phrase.charAt(charIndex) === '\n' ? '<br>' : phrase.charAt(charIndex);
+                charIndex++; setTimeout(writeEffect, 35);
+            }
+        }
+        window.onload = writeEffect;
+
+        // --- HAPTIC FEEDBACK ---
+        function vibrate() { if(navigator.vibrate) navigator.vibrate(40); }
+
+        // --- TRANSICIÓN DE IGNICIÓN ---
+        function runIgnition() {
+            vibrate();
+            const effect = document.getElementById('ignite-effect');
+            effect.style.display = 'flex';
+            
+            // Partículas de brasas
+            for(let k=0; k<30; k++) {
+                setTimeout(() => {
+                    const e = document.createElement('div');
+                    e.style.position = 'absolute';
+                    e.style.fontSize = '2rem';
+                    e.style.left = Math.random() * 100 + "vw";
+                    e.innerHTML = '🔥';
+                    e.style.animation = `floatUp 1.2s ease-out forwards`;
+                    effect.appendChild(e);
+                    setTimeout(() => e.remove(), 1200);
+                }, k * 50);
+            }
+
+            setTimeout(() => {
+                document.getElementById('s1').classList.remove('active');
+                document.getElementById('s2').classList.add('active');
+                effect.style.opacity = '0';
+                setTimeout(() => effect.style.display = 'none', 500);
+                window.scrollTo(0,0);
+            }, 1800);
+        }
+
+        function updateCart(name, price, change) {
+            vibrate();
+            if(!cart[name]) cart[name] = { qty: 0, price: price };
+            cart[name].qty += change;
+            if(cart[name].qty < 0) cart[name].qty = 0;
+            
+            document.getElementById(`qty-${name}`).innerText = cart[name].qty;
+            
+            total = 0;
+            let items = 0;
+            for(let key in cart) {
+                total += cart[key].qty * cart[key].price;
+                items += cart[key].qty;
+            }
+            
+            const checkout = document.getElementById('checkout');
+            checkout.style.display = items > 0 ? 'flex' : 'none';
+            document.getElementById('total-val').innerText = `$${total.toLocaleString()}`;
+        }
+
+        function openForm() { vibrate(); document.getElementById('modal-form').style.display = 'flex'; }
+
+        function sendOrder(e) {
+            e.preventDefault();
+            vibrate();
+            let pedidoStr = "";
+            for(let key in cart) if(cart[key].qty > 0) pedidoStr += `• ${cart[key].qty}x ${key}\n`;
+
+            const msg = `*BARRICA & BRASA - NUEVO PEDIDO*\n` +
+                        `------------------------------------\n` +
+                        `👤 CLIENTE: ${document.getElementById('fname').value}\n` +
+                        `📍 UBICACIÓN: ${document.getElementById('faddr').value}\n` +
+                        `📞 CELULAR: ${document.getElementById('ftel').value}\n` +
+                        `------------------------------------\n` +
+                        `🍴 PEDIDO:\n${pedidoStr}\n` +
+                        `💰 TOTAL: $${total.toLocaleString()}\n` +
+                        `💳 PAGO: ${document.getElementById('fpay').value}\n` +
+                        `------------------------------------\n` +
+                        `📝 NOTA: ${document.getElementById('fnote').value || 'Sin notas'}\n\n` +
+                        `_¡Envíen los refuerzos!_ 🔥`;
+
+            window.open(`https://wa.me/573207376174?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
